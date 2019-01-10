@@ -1,69 +1,27 @@
-import React, { Component } from 'react';
-import MapGL, { Marker } from 'react-map-gl';
+import dotenv from 'dotenv';
+import React, { Fragment } from 'react';
+import './config/ReactotronConfig';
 
-import 'mapbox-gl/dist/mapbox-gl.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-export default class Map extends Component {
-  state = {
-    viewport: {
-      width: window.innerWidth,
-      height: window.innerHeight,
-      latitude: -23.5439948,
-      longitude: -46.6065452,
-      zoom: 14,
-    },
-  };
+import { Provider } from 'react-redux';
+import store from './store';
 
-  componentDidMount() {
-    window.addEventListener('resize', this._resize);
-    this._resize();
-  }
+import Routes from './routes';
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this._resize);
-  }
+import 'font-awesome/css/font-awesome.css';
+import './styles.css';
 
-  _resize = () => {
-    this.setState({
-      viewport: {
-        ...this.state.viewport,
-        width: window.innerWidth,
-        height: window.innerHeight,
-      },
-    });
-  };
+dotenv.config();
 
-  handleMapClick(e) {
-    const [latitude, longitude] = e.lngLat;
+const App = () => (
+  <Provider store={store}>
+    <Fragment>
+      <Routes />
+      <ToastContainer autoClose={5000} />
+    </Fragment>
+  </Provider>
+);
 
-    alert(`Latitude: ${latitude} \nLongitude: ${longitude}`);
-  }
-
-  render() {
-    return (
-      <MapGL
-        {...this.state.viewport}
-        onClick={this.handleMapClick}
-        mapStyle="mapbox://styles/mapbox/basic-v9"
-        mapboxApiAccessToken="pk.eyJ1IjoiaG9zZWFwcyIsImEiOiJjam9scXAwMHAwMDNxM3B0Ynh5cGloc21xIn0.gcEGco4DQxocZ2HWEq67dA"
-        onViewportChange={viewport => this.setState({ viewport })}
-      >
-        <Marker
-          latitude={-23.5439948}
-          longitude={-46.6065452}
-          onClick={this.handleMapClick}
-          captureClick
-        >
-          <img
-            style={{
-              borderRadius: 100,
-              width: 48,
-              height: 48,
-            }}
-            src="https://avatars2.githubusercontent.com/u/2254731?v=4"
-          />
-        </Marker>
-      </MapGL>
-    );
-  }
-}
+export default App;
