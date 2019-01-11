@@ -43,7 +43,7 @@ class Map extends Component {
     const [longitude, latitude] = e.lngLat;
     const { showModal } = this.props;
 
-    // console.log(e.lngLat);
+    console.log(this.props);
 
     await showModal({ latitude, longitude });
   };
